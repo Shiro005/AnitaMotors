@@ -7,6 +7,7 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import Vehicles from './Pages/VehicleEntry/Vechicle';
 import Layout from './Layout';
 import ThirdParty from './Pages/Third-Party/ThirdParty';
+import BillGenerator from './Pages/BillGenerator/BillGenerator';
 
 // Login component
 const Login = ({ setIsAuthenticated }) => {
@@ -120,6 +121,7 @@ const App = () => {
             <Route path="workers" element={<WorkersPage />} />
             <Route path="spare-parts" element={<SparePartsManagement />} />
             <Route path="vehicles" element={<Vehicles />} />
+            <Route path="bill" element={<BillGenerator />} />
             <Route path="maintenance" element={<ThirdParty />} />
             <Route path="worker/:workerId" element={<WorkerDetailsPage />} />
           </Route>
