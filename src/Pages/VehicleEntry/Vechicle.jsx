@@ -286,18 +286,21 @@ const Vehicle = () => {
         selectedUnit: unit // Add the specific unit information
       });
 
+      // Set initial bill data with the unit's information
       setBillData({
         ...billData,
         vehicleId: vehicle.id,
         sellingPrice: vehicle.price,
         unitId: unit.id,
-        chassisNo: unit.chassisNo,
-        motorNo: unit.motorNo,
-        batteryNo: unit.batteryNo,
-        controllerNo: unit.controllerNo,
+        // Pass the specific unit's data
+        chassisNo: unit.chassisNo || '',
+        motorNo: unit.motorNo || '',
+        batteryNo: unit.batteryNo || '',
+        controllerNo: unit.controllerNo || '',
         color: unit.color,
         quantity: 1, // Since we're selling a specific unit, quantity is 1
-        billNumber: `BILL-${Math.floor(Math.random() * 10000)}-${new Date().getTime().toString().slice(-4)}`
+        date: new Date().toISOString().split('T')[0], // Set current date in YYYY-MM-DD format
+        billNumber: `AM${Math.floor(1000 + Math.random() * 9000)}` // Format to match your AM prefix pattern
       });
 
       setShowBill(true);
