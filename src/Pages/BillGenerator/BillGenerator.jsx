@@ -15,6 +15,13 @@ const BillGenerator = ({ vehicle, initialBillData, onCompleteSale, onCancel }) =
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCategory, setSearchCategory] = useState('customerName');
     const [showHistory, setShowHistory] = useState(false);
+
+    const [billFormat, setBillFormat] = useState('normal'); // 'normal' or 'bajaj'
+
+    // Add this function to toggle between bill formats
+    const toggleBillFormat = (format) => {
+        setBillFormat(format);
+    };
     const billRef = useRef();
 
     // Load saved bills from localStorage on component mount
@@ -318,7 +325,7 @@ const BillGenerator = ({ vehicle, initialBillData, onCompleteSale, onCancel }) =
                         <Text style={[styles.tableCell, { width: '10%', textAlign: 'center' }]}>{billData.quantity}</Text>
                         <Text style={[styles.tableCell, { width: '15%', textAlign: 'right' }]}>{totalAmount.toFixed(2)}</Text>
                     </View>
-                
+
                 </View>
 
                 {/* Amount Calculation */}

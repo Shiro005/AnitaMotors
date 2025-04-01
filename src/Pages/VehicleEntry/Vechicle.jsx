@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { database } from '../../Database/firebaseconfig';
+import { Edit, Trash2, List, Search, AlertCircle } from "lucide-react";
 import { ref, set, onValue, remove, update, push } from 'firebase/database';
 import BillGenerator from '../BillGenerator/BillGenerator';
 
@@ -749,107 +750,115 @@ const Vehicle = () => {
 
             {/* Vehicle List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredVehicles.length > 0 ? filteredVehicles.map(vehicle => (
-                <div key={vehicle.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-                  <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-4 text-white">
-                    <h3 className="text-xl font-bold mb-1">{vehicle.name}</h3>
-                    <p className="text-sm opacity-90">Model: {vehicle.model}</p>
-                  </div>
-
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="font-bold text-lg text-blue-800">₹{vehicle.price.toLocaleString()}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-bold ${vehicle.quantity > 10 ? 'bg-blue-100 text-blue-800' :
-                        vehicle.quantity > 0 ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                        {vehicle.quantity > 0 ? `${vehicle.quantity} in stock` : 'Out of stock'}
-                      </span>
+              {filteredVehicles.length > 0 ? (
+                filteredVehicles.map((vehicle) => (
+                  <div
+                    key={vehicle.id}
+                    className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col"
+                  >
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white">
+                      <h3 className="text-xl font-bold mb-1 flex items-center">
+                        {vehicle.name}
+                      </h3>
+                      <p className="text-sm text-blue-100">Model: {vehicle.model}</p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-600">Colors:</span>
-                        <p>Blue, Navy Blue, Sky Blue</p>
+                    <div className="p-5 flex-grow">
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="font-bold text-lg text-indigo-800">₹{vehicle.price.toLocaleString()}</span>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium flex items-center ${vehicle.quantity > 10
+                              ? "bg-green-100 text-green-800"
+                              : vehicle.quantity > 0
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                        >
+                          {vehicle.quantity > 0 ? (
+                            <>{vehicle.quantity} in stock</>
+                          ) : (
+                            <>Out of stock</>
+                          )}
+                        </span>
                       </div>
-                      {vehicle.engineCapacity && (
-                        <div>
-                          <span className="text-gray-600">Engine:</span>
-                          <p>{vehicle.engineCapacity}</p>
+
+                      <div className="grid grid-cols-2 gap-3 text-sm mb-4">
+                        <div className="bg-gray-50 p-2 rounded-lg">
+                          <span className="text-gray-600 block mb-1 font-medium">Colors</span>
+                          <div className="flex space-x-1">
+                            <span className="inline-block w-5 h-5 rounded-full bg-blue-500" title="Blue"></span>
+                            <span className="inline-block w-5 h-5 rounded-full bg-blue-800" title="Navy Blue"></span>
+                            <span className="inline-block w-5 h-5 rounded-full bg-blue-300" title="Sky Blue"></span>
+                          </div>
+                        </div>
+
+                        {vehicle.engineCapacity && (
+                          <div className="bg-gray-50 p-2 rounded-lg">
+                            <span className="text-gray-600 block mb-1 font-medium">Engine</span>
+                            <p className="text-gray-800">{vehicle.engineCapacity}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {vehicle.specifications && (
+                        <div className="text-sm mb-4 bg-gray-50 p-3 rounded-lg">
+                          <span className="text-gray-600 font-medium block mb-1">Specifications</span>
+                          <p className="text-gray-700 line-clamp-2">{vehicle.specifications}</p>
                         </div>
                       )}
                     </div>
 
-                    {vehicle.specifications && (
-                      <div className="text-sm mb-4">
-                        <span className="text-gray-600">Specifications:</span>
-                        <p className="text-gray-700 line-clamp-2">{vehicle.specifications}</p>
-                      </div>
-                    )}
-
-                    <div className="flex justify-between mt-4">
+                    <div className="flex justify-between p-4 border-t border-gray-100 bg-gray-50">
                       <button
                         onClick={() => handleEdit(vehicle)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
+                        className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-1 font-medium"
                       >
-                        Edit
+                        <Edit size={16} />
+                        <span>Edit</span>
                       </button>
+
                       <button
                         onClick={() => handleDelete(vehicle.id)}
-                        className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm"
+                        className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center gap-1 font-medium"
                       >
-                        Delete
+                        <Trash2 size={16} />
+                        <span>Delete</span>
                       </button>
+
                       <button
                         onClick={() => handleViewUnits(vehicle.id)}
-                        className="px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm"
+                        className="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors flex items-center gap-1 font-medium"
                       >
-                        View Units
-                      </button>
-                      <button
-                        onClick={() => handleSellClick(vehicle)}
-                        className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                        disabled={vehicle.quantity < 1}
-                      >
-                        Sell
+                        <List size={16} />
+                        <span>Units</span>
                       </button>
                     </div>
                   </div>
-                </div>
-              )) : (
-                <div className="col-span-3 bg-white rounded-lg shadow-md p-8 text-center">
+                ))
+              ) : (
+                <div className="col-span-3 bg-white rounded-xl shadow-md p-10 text-center">
                   <div className="flex flex-col items-center justify-center">
-                    <svg
-                      className="w-16 h-16 text-gray-400 mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <div className="bg-gray-100 p-4 rounded-full mb-4">
+                      <AlertCircle size={32} className="text-gray-400" />
+                    </div>
                     <h3 className="text-xl font-medium text-gray-700 mb-2">
-                      No scooters found
+                      No vehicles found
                     </h3>
-                    <p className="text-gray-500 mb-4">
-                      {searchQuery.trim() !== ''
-                        ? 'Your search did not match any scooters.'
-                        : 'No scooters have been added yet.'}
+                    <p className="text-gray-500 mb-6 max-w-md mx-auto">
+                      {searchQuery.trim() !== ""
+                        ? "Your search did not match any vehicles. Try different keywords or clear your search."
+                        : "No vehicles have been added to the inventory yet."}
                     </p>
-                    {searchQuery.trim() !== '' && (
+                    {searchQuery.trim() !== "" && (
                       <button
                         onClick={() => {
-                          setSearchQuery('');
+                          setSearchQuery("");
                           setFilteredVehicles(vehicles);
                         }}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+                        className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 font-medium mx-auto"
                       >
-                        Clear search
+                        <Search size={18} />
+                        <span>Clear search</span>
                       </button>
                     )}
                   </div>
